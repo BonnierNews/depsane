@@ -11,12 +11,13 @@
   "dependencies": {
     "existing-dep": "1.0.0",
     "@ns/existing-dep": "1.0.0",
-    "unused-dep": "1.0.0",
-    "only-used-in-dev-deps": "1.0.0",
-    "used-by-import-from": "1.0.0"
+    "used-by-import-from": "1.0.0",
+    "exists-in-dev-deps": "1.0.0"
   },
   "devDependencies": {
-    "exists-in-dev-deps": "1.0.0",
-    "unused-dev-dep": "1.0.0"
+    "only-used-in-dev-deps": "1.0.0",
+    "eslint": "1.0.0",
+    "eslint-config-foo": "1.0.0",
+    "epic-fixer": "1.0.0"
   }
 }

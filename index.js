@@ -1,141 +1,108 @@
 "use strict";
-const fsPromises = require("fs").promises;
 const path = require("path");
-const { parse } = require("@babel/parser");
-const traverse = require("@babel/traverse").default;
-const resolve = require("path").resolve;
-const isCoreModule = require("is-core-module");
+const micromatch = require("micromatch");
 
-async function analyze(root) {
-  const alreadyAnalyzed = new Set();
-  const packageContent = await fsPromises.readFile(
-    path.join(root, "package.json")
-  );
-  const packageInfo = JSON.parse(packageContent);
-  const entryPoint = packageInfo.main || "index.js";
-  const usedDependencies = {};
-  const follows = [];
-  follows.push(resolve(path.join(root, entryPoint)));
-  while (follows.length > 0) {
-    const filename = follows.pop();
-    const { deps, locals } = await analyzeFile(filename, alreadyAnalyzed);
-    for (const dep of deps) {
-      const globalDep = usedDependencies[dep.mod] || new Set();
-      globalDep.add(dep.file);
-      usedDependencies[dep.mod] = globalDep;
-    }
-    follows.push(...locals);
-  }
+const { analyze } = require("./lib/analyze");
 
-  const specifiedDeps = packageInfo.dependencies;
-  const specifiedDevDeps = packageInfo.devDependencies || {};
+async function main(argv, output = console) {
+  let retCode = 0;
+  try {
+    const root = argv._[0] || ".";
+    const ignoreModules = argv.ignores ? argv.ignores.split(",") : [];
+    const ignoreDirs = argv["ignore-dirs"]
+      ? argv["ignore-dirs"].split(",")
+      : [];
 
-  const missingDependencies = [];
-  for (const dep of Object.keys(usedDependencies)) {
-    if (!specifiedDeps[dep]) {
-      missingDependencies.push(dep);
-    }
-  }
+    let {
+      dependencies,
+      devDependencies,
+      usedDependencies,
+      usedDevDependencies,
+      unusedDependencies,
+      unusedDevDependencies,
+      missingDependencies,
+      missingDevDependencies,
+    } = await analyze(root, ignoreDirs, output);
 
-  const dependencies = packageInfo.dependencies || {};
-  const devDependencies = packageInfo.devDependencies || {};
-
-  const unusedDependencies = [];
-  for (const dep of Object.keys(dependencies)) {
-    if (!usedDependencies[dep]) {
-      unusedDependencies.push(dep);
-    }
-  }
-
-  return {
-    dependencies,
-    devDependencies,
-    usedDependencies,
-    unusedDependencies,
-    missingDependencies,
-  };
-}
-
-async function fileExists(p) {
-  return await fsPromises
-    .stat(p)
-    .then(() => true)
-    .catch(() => false);
-}
-
-async function analyzeFile(maybeFilename, alreadyAnalyzed) {
-  let filename;
-  if (maybeFilename.endsWith(".json")) {
-    return { locals: [], deps: [] };
-  }
-  if (maybeFilename.endsWith(".js")) {
-    filename = maybeFilename;
-  } else {
-    let f = path.join(`${maybeFilename}.js`);
-    if (await fileExists(f)) {
-      filename = f;
-    } else {
-      f = path.join(`${maybeFilename}/index.js`);
-      if (await fileExists(f)) {
-        filename = f;
+    if (unusedDependencies.length > 0) {
+      // eslint-disable-next-line no-console
+      output.log("Unused dependencies");
+      for (const dep of unusedDependencies) {
+        // eslint-disable-next-line no-console
+        output.log(`* ${dep}`);
       }
+      retCode = 1;
     }
-  }
-  if (!filename) {
-    // eslint-disable-next-line no-console
-    console.error(`${maybeFilename} does not exist`);
-    return { locals: [], deps: [] };
-  }
 
-  if (alreadyAnalyzed.has(filename)) {
-    return { locals: [], deps: [] };
-  }
+    unusedDevDependencies = unusedDevDependencies.filter(
+      (dep) => !micromatch.isMatch(dep, ignoreModules)
+    );
 
-  alreadyAnalyzed.add(filename);
+    if (unusedDevDependencies.length > 0) {
+      // eslint-disable-next-line no-console
+      output.log("Unused devDependencies");
+      for (const dep of unusedDevDependencies) {
+        // eslint-disable-next-line no-console
+        output.log(`* ${dep}`);
+      }
+      retCode = 1;
+    }
 
-  const fileRoot = path.dirname(filename);
-  const content = await fsPromises.readFile(filename, "utf-8");
-  const ast = parse(content.toString());
-  const deps = [];
-  const locals = [];
-  traverse(ast, {
-    enter(p) {
-      const node = p.container;
-      if (
-        node.type === "CallExpression" &&
-        node.callee &&
-        node.callee.type === "Identifier" &&
-        node.callee.name === "require" &&
-        node.arguments.length === 1
-      ) {
-        if (
-          node.arguments[0].type === "Literal" ||
-          node.arguments[0].type === "StringLiteral"
-        ) {
-          const required = node.arguments[0].value;
-          if (!required.startsWith(".")) {
-            if (!isCoreModule(required)) {
-              const modSplit = required.split("/");
-              let actualMod;
-              if (modSplit.length <= 1) {
-                actualMod = required;
-              } else {
-                if (modSplit[0].startsWith("@")) {
-                  actualMod = `${modSplit[0]}/${modSplit[1]}`;
-                } else {
-                  actualMod = modSplit[0];
-                }
-              }
-              deps.push({ mod: actualMod, file: filename });
-            }
-          } else {
-            locals.push(path.resolve(path.join(fileRoot, required)));
-          }
+    missingDependencies = missingDependencies.filter(
+      (dep) => !ignoreModules.includes(dep)
+    );
+
+    if (missingDependencies.length > 0) {
+      // eslint-disable-next-line no-console
+      output.log("Missing dependencies");
+      for (const dep of missingDependencies) {
+        const referencedFrom = usedDependencies[dep];
+        const x = [...referencedFrom]
+          .map((ref) => `"${path.relative(root, ref)}"`)
+          .join(", ");
+        if (devDependencies[dep]) {
+          // eslint-disable-next-line no-console
+          output.log(
+            `* ${dep}: ${x} (exists in devDependencies but needed in dependencies!)`
+          );
+        } else {
+          // eslint-disable-next-line no-console
+          output.log(`* ${dep}: ${x}`);
         }
       }
-    },
-  });
-  return { deps, locals };
+      retCode = 1;
+    }
+
+    missingDevDependencies = missingDevDependencies.filter(
+      (dep) => !ignoreModules.includes(dep)
+    );
+
+    if (missingDevDependencies.length > 0) {
+      // eslint-disable-next-line no-console
+      output.log("Missing devDependencies");
+      for (const dep of missingDevDependencies) {
+        const referencedFrom = usedDevDependencies[dep];
+        const x = [...referencedFrom]
+          .map((ref) => `"${path.relative(root, ref)}"`)
+          .join(", ");
+        if (dependencies[dep]) {
+          // eslint-disable-next-line no-console
+          output.log(
+            `* ${dep}: ${x} (exists in dependencies but is only used as dev, maybe move it to devDependencies?)`
+          );
+        } else {
+          // eslint-disable-next-line no-console
+          output.log(`* ${dep}: ${x}`);
+        }
+      }
+      retCode = 1;
+    }
+  } catch (e) {
+    output.error(e.message);
+    retCode = 1;
+  }
+
+  return retCode;
 }
 
-module.exports = analyze;
+module.exports = main;
