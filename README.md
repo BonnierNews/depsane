@@ -6,7 +6,7 @@ entrypoint specified in `package.json` (defaults: `index.js`). Furthermore:
 if a `bin`-object is specified in `package.json` all code reachable from those
 files will also be included.
 
-`depsane` is focused on determining which dependedencies that should be 
+`depsane` is focused on determining which dependencies that should be 
 present specifically in `dependencies` and `devDependencies`. It classifies a
 dependency found in `devDependencies` used in the main code path as missing,
 and a dependency only used as a devDependency but that is specified in
@@ -29,7 +29,7 @@ npx depsane [directory] [arguments]
 
 Prints missing dependencies and unused dependencies.
 
-Exits with code `0` is no missing or unused dependencies are found and `1` otherwise.
+Exits with code `0` if no missing or unused dependencies are found and `1` otherwise.
 
 The directory defaults to the current directory.
 
