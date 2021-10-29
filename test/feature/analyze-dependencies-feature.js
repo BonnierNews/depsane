@@ -71,7 +71,7 @@ Feature("analyze dependencies", () => {
   );
 
   Scenario(
-    "analyze package with missing devDependencies, but ignore the folder where it is required",
+    "analyze package with missing devDependencies, but ignore the folder where they are required",
     () => {
       let retCode;
       const log = [];
@@ -126,7 +126,7 @@ Feature("analyze dependencies", () => {
     });
 
     Then(
-      "the return code should be 1 because there are dependencies mising",
+      "the return code should be 1 because there are dependencies missing and so on",
       () => {
         expect(retCode).to.eql(1);
       }
