@@ -18,6 +18,16 @@
     "name": "Markus Ekholm",
     "email": "markus@botten.org"
   },
+  "keywords": [
+    "check",
+    "unused",
+    "package",
+    "packages",
+    "depcheck",
+    "dependency",
+    "dependencies",
+    "devDependencies"
+  ],
   "license": "MIT",
   "dependencies": {
     "@babel/parser": "^7.15.7",
@@ -27,6 +37,13 @@
     "minimist": "^1.2.5",
     "readdirp": "^3.6.0"
   },
+  "files": [
+    "bin/",
+    "lib/",
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
   "devDependencies": {
     "chai": "^4.3.4",
     "eslint": "^7.32.0",
