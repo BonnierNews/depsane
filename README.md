@@ -39,5 +39,8 @@ All of the arguments are optional:
 
 `--ignores`: comma-separated list of dependencies to ignore, supports wildcards (i.e. "eslint*" will ignore all dependencies that starts with eslint).
 
+## Changelog
+Can be found [here](CHANGELOG.md).
+
 ## License
 Released under the [MIT license](https://tldrlegal.com/license/mit-license).
