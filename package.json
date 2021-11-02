@@ -14,10 +14,7 @@
     "test": "mocha && ./bin/depsane.js . --ignore-dirs test/data --ignores 'prettier,mocha*,eslint*'",
     "lint": "eslint ."
   },
-  "author": {
-    "name": "Markus Ekholm",
-    "email": "markus@botten.org"
-  },
+  "author": "Bonnier News",
   "keywords": [
     "check",
     "unused",
