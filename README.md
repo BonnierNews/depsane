@@ -19,7 +19,7 @@ with its' `dependencies` but during testing and development both
 
 ## Installation
 ```bash
-npm install --only=dev depsane
+npm install --save-dev depsane
 ```
 
 ## Usage
