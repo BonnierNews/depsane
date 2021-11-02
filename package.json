@@ -41,6 +41,7 @@
     "bin/",
     "lib/",
     "index.js",
+    "CHANGELOG.md",
     "README.md",
     "LICENSE"
   ],
