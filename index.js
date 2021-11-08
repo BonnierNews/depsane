@@ -57,7 +57,7 @@ async function main(argv, output = console) {
       output.log("Missing dependencies");
       for (const dep of missingDependencies) {
         const referencedFrom = usedDependencies[dep];
-        const x = [...referencedFrom]
+        const x = [ ...referencedFrom ]
           .map((ref) => `"${path.relative(root, ref)}"`)
           .join(", ");
         if (devDependencies[dep]) {
@@ -82,7 +82,7 @@ async function main(argv, output = console) {
       output.log("Missing devDependencies");
       for (const dep of missingDevDependencies) {
         const referencedFrom = usedDevDependencies[dep];
-        const x = [...referencedFrom]
+        const x = [ ...referencedFrom ]
           .map((ref) => `"${path.relative(root, ref)}"`)
           .join(", ");
         if (dependencies[dep]) {

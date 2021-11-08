@@ -18,7 +18,7 @@ Feature("analyze dependencies", () => {
 
     When("analyzing then package", async () => {
       retCode = await depsane(
-        { _: [path.resolve("./test/data/package3")] },
+        { _: [ path.resolve("./test/data/package3") ] },
         output
       );
     });
@@ -51,7 +51,7 @@ Feature("analyze dependencies", () => {
         async () => {
           retCode = await depsane(
             {
-              _: [path.resolve("./test/data/package4")],
+              _: [ path.resolve("./test/data/package4") ],
               ignores: "eslint*,epic-fixer",
             },
             output
@@ -88,7 +88,7 @@ Feature("analyze dependencies", () => {
         async () => {
           retCode = await depsane(
             {
-              _: [path.resolve("./test/data/package5")],
+              _: [ path.resolve("./test/data/package5") ],
               "ignore-dirs": path.resolve("./test/data/package5/molder"),
             },
             output
@@ -120,7 +120,7 @@ Feature("analyze dependencies", () => {
 
     When("analyzing then package", async () => {
       retCode = await depsane(
-        { _: [path.resolve("./test/data/package1")] },
+        { _: [ path.resolve("./test/data/package1") ] },
         output
       );
     });
@@ -189,7 +189,7 @@ Feature("analyze dependencies", () => {
     };
 
     When("analyzing then package", async () => {
-      retCode = await depsane({ _: [path.resolve("./test/data")] }, output);
+      retCode = await depsane({ _: [ path.resolve("./test/data") ] }, output);
     });
 
     Then("the return code should be 1 because there is no package.json", () => {
@@ -214,7 +214,7 @@ Feature("analyze dependencies", () => {
 
     When("analyzing then package", async () => {
       retCode = await depsane(
-        { _: [path.resolve("./test/data/package2")] },
+        { _: [ path.resolve("./test/data/package2") ] },
         output
       );
     });

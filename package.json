@@ -11,7 +11,7 @@
   "description": "Checks for missing dependencies based on code reachable from the main entrypoint specified in package.json",
   "main": "index.js",
   "scripts": {
-    "test": "mocha && ./bin/depsane.js . --ignore-dirs test/data --ignores 'prettier,mocha*,eslint*'",
+    "test": "mocha && ./bin/depsane.js . --ignore-dirs test/data --ignores 'mocha*,eslint*'",
     "lint": "eslint ."
   },
   "author": "Bonnier News",
@@ -45,10 +45,8 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-config-exp": "^0.0.1",
     "mocha": "^9.1.2",
-    "mocha-cakes-2": "^3.3.0",
-    "prettier": "^2.4.1"
+    "mocha-cakes-2": "^3.3.0"
   }
 }
