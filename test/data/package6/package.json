@@ -1,0 +1,18 @@
+{
+  "name": "package1",
+  "bin": {
+    "cli": "bin/cli.js"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "foo.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "existing-dep": "1.0.0",
+    "@ns/existing-dep": "1.0.0",
+    "used-by-import-from": "1.0.0",
+    "exists-in-dev-deps": "1.0.0",
+    "unused-dep": "1.0.0"
+  }
+}

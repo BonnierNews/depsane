@@ -107,6 +107,43 @@ Feature("analyze dependencies", () => {
     }
   );
 
+  Scenario(
+    "analyze package with unused dependency, but ignore it",
+    () => {
+      let retCode;
+      const log = [];
+      const warn = [];
+      const err = [];
+      const output = {
+        log: (args) => log.push(args),
+        warn: (args) => warn.push(args),
+        error: (args) => err.push(args),
+      };
+
+      When(
+        "analyzing then package, ignoring the unused dependency",
+        async () => {
+          retCode = await depsane(
+            {
+              _: [ path.resolve("./test/data/package6") ],
+              ignores: "unused-dep",
+            },
+            output
+          );
+        }
+      );
+
+      Then("the return code should be 0 because everything is fine", () => {
+        expect(retCode).to.eql(0);
+      });
+
+      And("we should see no output", () => {
+        expect(log.length).to.eql(0);
+        expect(err.length).to.eql(0);
+      });
+    }
+  );
+
   Scenario("analyze package with troublesome dependencies", () => {
     let retCode;
     const log = [];

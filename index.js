@@ -24,6 +24,10 @@ async function main(argv, output = console) {
       missingDevDependencies,
     } = await analyze(root, ignoreDirs, output);
 
+    unusedDependencies = unusedDependencies.filter(
+      (dep) => !micromatch.isMatch(dep, ignoreModules)
+    );
+
     if (unusedDependencies.length > 0) {
       // eslint-disable-next-line no-console
       output.log("Unused dependencies");
