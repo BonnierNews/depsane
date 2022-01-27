@@ -1,15 +1,17 @@
-Changelog
----------
+# Changelog
 
-# 0.0.4
+## 0.0.5
+
+Bump deps.
+
+## 0.0.4
 
 --ignores is respected when calculating unused dependencies.
 
-
-# 0.0.2
+## 0.0.2
 
 Use exp-eslint-config.
 
-# 0.0.1
+## 0.0.1
 
 Initial working version.

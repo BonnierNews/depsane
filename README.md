@@ -1,4 +1,5 @@
 # depsane
+
 [![Test application](https://github.com/BonnierNews/depsane/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/BonnierNews/depsane/actions/workflows/run-tests.yml)
 
 Checks for missing `dependencies` based on code reachable from the `main`
@@ -6,7 +7,7 @@ entrypoint specified in `package.json` (defaults: `index.js`). Furthermore:
 if a `bin`-object is specified in `package.json` all code reachable from those
 files will also be included.
 
-`depsane` is focused on determining which dependencies that should be 
+`depsane` is focused on determining which dependencies that should be
 present specifically in `dependencies` and `devDependencies`. It classifies a
 dependency found in `devDependencies` used in the main code path as missing,
 and a dependency only used as a devDependency but that is specified in
@@ -18,11 +19,13 @@ with its' `dependencies` but during testing and development both
 `devDependencies` and `dependencies` are installed.
 
 ## Installation
+
 ```bash
 npm install --save-dev depsane
 ```
 
 ## Usage
+
 ```bash
 npx depsane [directory] [arguments]
 ```
@@ -40,7 +43,9 @@ All of the arguments are optional:
 `--ignores`: comma-separated list of dependencies to ignore, supports wildcards (i.e. "eslint*" will ignore all dependencies that starts with eslint).
 
 ## Changelog
+
 Can be found [here](CHANGELOG.md).
 
 ## License
+
 Released under the [MIT license](https://tldrlegal.com/license/mit-license).
