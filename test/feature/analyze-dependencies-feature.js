@@ -264,6 +264,63 @@ Feature("analyze dependencies", () => {
       expect(err).to.include("Unexpected token o in JSON at position 1");
     });
   });
+
+  Scenario("analyze package using eslint", () => {
+    let retCode;
+    const log = [];
+    const warn = [];
+    const err = [];
+    const output = {
+      log: (args) => log.push(args),
+      warn: (args) => warn.push(args),
+      error: (args) => err.push(args),
+    };
+
+    When("analyzing then package", async () => {
+      retCode = await depsane(
+        { _: [ path.resolve("./test/data/package-with-eslint") ] },
+        output
+      );
+    });
+
+    Then("the return code should be 0 because depsane has automatically detected that eslint and friends are used", () => {
+      expect(retCode).to.eql(0, log);
+    });
+
+    And("we should see no output", () => {
+      expect(log.length).to.eql(0);
+      expect(err.length).to.eql(0);
+    });
+
+  });
+
+  Scenario("analyze package using mocha", () => {
+    let retCode;
+    const log = [];
+    const warn = [];
+    const err = [];
+    const output = {
+      log: (args) => log.push(args),
+      warn: (args) => warn.push(args),
+      error: (args) => err.push(args),
+    };
+
+    When("analyzing then package", async () => {
+      retCode = await depsane(
+        { _: [ path.resolve("./test/data/package-with-mocha") ] },
+        output
+      );
+    });
+
+    Then("the return code should be 0 because depsane has automatically detected that mocha and friends are used", () => {
+      expect(retCode).to.eql(0);
+    });
+
+    And("we should see no output", () => {
+      expect(log.length).to.eql(0);
+      expect(err.length).to.eql(0);
+    });
+  });
 });
 
 function findSegment(startString, arr) {

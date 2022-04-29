@@ -1,0 +1,15 @@
+{
+  "name": "package1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "foo.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "1.0.0",
+    "mocha-foo": "1.0.0"
+  }
+}

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0
+
+Experimental guess work to determine if `eslint` and `mocha` and
+associated plugins are used as devDependencies.
+
 ## 0.0.5
 
 Bump deps.

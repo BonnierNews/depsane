@@ -1,6 +1,6 @@
 {
   "name": "depsane",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "bin": {
     "depsane": "bin/depsane.js"
   },
@@ -11,7 +11,7 @@
   "description": "Checks for missing dependencies based on code reachable from the main entrypoint specified in package.json",
   "main": "index.js",
   "scripts": {
-    "test": "mocha && ./bin/depsane.js . --ignore-dirs test/data --ignores 'mocha*,eslint*'",
+    "test": "mocha && ./bin/depsane.js . --ignore-dirs test/data",
     "lint": "eslint ."
   },
   "author": "Bonnier News",

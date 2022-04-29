@@ -18,6 +18,9 @@ testing but fails once deployed as the deployed version will only be installed
 with its' `dependencies` but during testing and development both
 `devDependencies` and `dependencies` are installed.
 
+There is also some experimental heuristics implemented to determine if `mocha`
+or `eslint` and their associated plugins are used as devDependencies or not.
+
 ## Installation
 
 ```bash
