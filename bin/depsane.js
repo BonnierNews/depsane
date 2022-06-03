@@ -4,8 +4,11 @@
 const minimist = require("minimist");
 const main = require("../");
 
+const output = {
+  log: (str) => process.stdout.write(`${str}\n`),
+  error: (str) => process.stderr.write(`${str}\n`),
+};
+
 (async () => {
-  const retCode = await main(minimist(process.argv.slice(2)));
-  // eslint-disable-next-line node/no-process-exit
-  process.exit(retCode);
+  process.exitCode = await main(minimist(process.argv.slice(2)), output);
 })();
