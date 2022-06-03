@@ -4,7 +4,7 @@ const micromatch = require("micromatch");
 
 const { analyze } = require("./lib/analyze");
 
-async function main(argv, output = console) {
+async function main(argv, output) {
   let retCode = 0;
   try {
     const root = argv._[0] || ".";
@@ -29,10 +29,8 @@ async function main(argv, output = console) {
     );
 
     if (unusedDependencies.length > 0) {
-      // eslint-disable-next-line no-console
       output.log("Unused dependencies");
       for (const dep of unusedDependencies) {
-        // eslint-disable-next-line no-console
         output.log(`* ${dep}`);
       }
       retCode = 1;
@@ -43,10 +41,8 @@ async function main(argv, output = console) {
     );
 
     if (unusedDevDependencies.length > 0) {
-      // eslint-disable-next-line no-console
       output.log("Unused devDependencies");
       for (const dep of unusedDevDependencies) {
-        // eslint-disable-next-line no-console
         output.log(`* ${dep}`);
       }
       retCode = 1;
@@ -57,7 +53,6 @@ async function main(argv, output = console) {
     );
 
     if (missingDependencies.length > 0) {
-      // eslint-disable-next-line no-console
       output.log("Missing dependencies");
       for (const dep of missingDependencies) {
         const referencedFrom = usedDependencies[dep];
@@ -65,12 +60,10 @@ async function main(argv, output = console) {
           .map((ref) => `"${path.relative(root, ref)}"`)
           .join(", ");
         if (devDependencies[dep]) {
-          // eslint-disable-next-line no-console
           output.log(
             `* ${dep}: ${x} (exists in devDependencies but needed in dependencies!)`
           );
         } else {
-          // eslint-disable-next-line no-console
           output.log(`* ${dep}: ${x}`);
         }
       }
@@ -82,7 +75,6 @@ async function main(argv, output = console) {
     );
 
     if (missingDevDependencies.length > 0) {
-      // eslint-disable-next-line no-console
       output.log("Missing devDependencies");
       for (const dep of missingDevDependencies) {
         const referencedFrom = usedDevDependencies[dep];
@@ -90,12 +82,10 @@ async function main(argv, output = console) {
           .map((ref) => `"${path.relative(root, ref)}"`)
           .join(", ");
         if (dependencies[dep]) {
-          // eslint-disable-next-line no-console
           output.log(
             `* ${dep}: ${x} (exists in dependencies but is only used as dev, maybe move it to devDependencies?)`
           );
         } else {
-          // eslint-disable-next-line no-console
           output.log(`* ${dep}: ${x}`);
         }
       }
