@@ -1,0 +1,4 @@
+site_name: "depsane"
+
+plugins:
+  - techdocs-core
