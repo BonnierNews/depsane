@@ -7,7 +7,7 @@ metadata:
     github.com/project-slug: BonnierNews/depsane
     backstage.io/techdocs-ref: dir:.
 spec:
-  type: service
+  type: library 
   lifecycle: production
   owner: expressen-lifestyle-infra
   providesApis:
