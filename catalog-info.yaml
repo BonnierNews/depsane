@@ -10,5 +10,3 @@ spec:
   type: library 
   lifecycle: production
   owner: expressen-lifestyle-infra
-  providesApis:
-    - depsane
