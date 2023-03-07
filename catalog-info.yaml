@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: depsane
+  description: "Checks for missing dependencies based on code reachable from the main entrypoint specified in package.json (defaults: index.js). depsane is focused on determining which dependencies that should be present specifically in dependencies and devDependencies. This solves the problem where an application works fine locally and during testing but fails once deployed as the deployed version will only be installed with its' dependencies but during testing and development both devDependencies and dependencies are installed."  
+  annotations: 
+    github.com/project-slug: BonnierNews/depsane
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: library 
+  lifecycle: production
+  owner: expressen-lifestyle-infra
